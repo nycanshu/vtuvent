@@ -49,6 +49,9 @@ const eventSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// Compound index to ensure uniqueness based on title and eventdate
+eventSchema.index({ title: 1, eventdate: 1 }, { unique: true });
+
 const Event = mongoose.model('Event', eventSchema);
 
 module.exports = Event;

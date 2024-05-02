@@ -8,8 +8,13 @@ module.exports = {
           const event = await Event.create(req.body);
           res.status(201).json(event);
         } catch (error) {
-          console.log(error.message);
-          res.status(500).json({message: error.message});
+          if (error.code === 11000 && error.keyPattern && error.keyPattern.title && error.keyPattern.eventdate) {
+            // Duplicate key error
+            res.status(400).json({ message: 'Event with the same title and event date already exists.' });
+        } else {
+            console.error(error.message);
+            res.status(500).json({ message: 'Internal server error' });
+        }
         }
       },
 
